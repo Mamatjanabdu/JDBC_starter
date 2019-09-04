@@ -1,66 +1,69 @@
 import java.sql.*;
 
-public class main3 {
+public class Main3 {
+
+
+    public static void main(String[] args) throws SQLException {
+
+        String connection_str = "jdbc:oracle:thin:@18.206.235.47:1521:xe"; // replace ip with your ip
+        String db_user = "hr";
+        String db_password = "hr";
+
+        Connection conn = DriverManager.getConnection(connection_str, db_user, db_password);
+
+        //Statement stmt = conn.createStatement();
+        //ResultSet.TYPE_SCROLL_INSENSITIVE enable us to create ResultSet that we can move forward and backward
+        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE
+                , ResultSet.CONCUR_UPDATABLE);
+
+        ResultSet rs = stmt.executeQuery("SELECT * FROM COUNTRIES");
+        // move cursor to a row that you specified
+        rs.absolute(2);
+        System.out.println(rs.getObject("COUNTRY_ID")
+                + " " + rs.getObject("COUNTRY_Name")
+                + " " + rs.getObject("REGION_ID"));
+
+        rs.first(); // move the cursor to first row
+        System.out.println(rs.getObject("COUNTRY_ID")
+                + " " + rs.getObject("COUNTRY_Name")
+                + " " + rs.getObject("REGION_ID"));
+        rs.last(); // move the cursor to last row
+        System.out.println(rs.getObject("COUNTRY_ID")
+                + " " + rs.getObject("COUNTRY_Name")
+                + " " + rs.getObject("REGION_ID"));
+
+ //       rs.beforeFirst(); // move the cursor to the location right before first row
+//        System.out.println(rs.getObject("COUNTRY_ID")
+//                + " " + rs.getObject("COUNTRY_Name")
+//                + " " + rs.getObject("REGION_ID"));
+
+//        rs.afterLast(); // move the cursor to the location right after last row
+//        System.out.println(rs.getObject("COUNTRY_ID")
+//                + " " + rs.getObject("COUNTRY_Name")
+//                + " " + rs.getObject("REGION_ID"));
+
+
+        //rs.first();
+        rs.beforeFirst();
+        while(rs.next()){
+            System.out.println(rs.getObject("COUNTRY_ID")
+                    + " "+ rs.getObject("COUNTRY_Name")
+                    + " "+ rs.getObject("REGION_ID") );
+
+        }
 
 
 
-        public static void main(String[] args) throws SQLException {
-            /*
-        Connection object for Database connection using DriverManager
-        Driver manager will make connection using the database driver in classpath and connection string defined
-        This is called Connection String : jdbc:oracle:thin @18.206.135.47:1521:xe
-        For this example , we have put oracle jdbc driver in class path and provided connection string and credentials
 
-        Connection string in detail
-        * jdbc -- protocol
-        * oracle -- sub-protocol to define database vendor,
-                if it was mysql database it would be jdbc:mysql....
-        * thin  -- oracle driver name , thin driver (depends on database itself , mysql does not require this)
-        * host  -- this is the address of the database server :  @18.207.135.47  your IP!
-        * port  -- this is the port database use : 1521
-        * xe    -- database service name
-        * */
-            String connection_str = "jdbc:oracle:thin:@34.207.196.176:1521:xe"; // replace ip with your ip
-            String db_user     = "hr";
-            String db_password = "hr";
-            // creating Connection object
-            // just like creating Webdriver object
-            // According to what kind of driver and connection string provided
-            //  it will create corresponding Connection object
-            Connection conn = DriverManager.getConnection(connection_str,db_user,db_password);
 
-            // once we have connection object , now we can create statement object. and it has ability to execute query
-            Statement stmt = conn.createStatement();
-            // optionally you may do as below , if you don't want to just move top tp bottom direction
-            //Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 
-            // use Statement Object to run query and store the result in ResultSet object
-            ResultSet rs = stmt.executeQuery("SELECT * FROM COUNTRIES");
-            // initially the cursor is at right before first row, next() method will move it to first row
-//        rs.next();
-//        // printing out the Region_Name column value at first row
-//        System.out.println(rs.getObject("Region_Name"));
-//        System.out.println(rs.getObject("Region_Id"));
-//        rs.next();
-//        System.out.println(rs.getObject("Region_Name"));
-//        System.out.println(rs.getObject("Region_Id"));
 
-            rs.absolute(2);
-                System.out.println(rs.getObject("country_ID")
-                        +" "+rs.getObject("Region_ID")
-                        +" "+rs.getObject("COUNTRY_Name"));
 
-            System.out.println("**********************");
 
-            rs.first();
-                System.out.println(rs.getObject("COUNTRY_ID")
-                        +" " + rs.getObject("COUNTRY_NAME")
-                        +" " + rs.getObject("REGION_ID"));
-                rs.last();
-            }
+
 
 
 
     }
 
-
+}
