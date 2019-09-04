@@ -1,6 +1,8 @@
 import java.sql.*;
 
-public class Main {
+public class main2 {
+
+
 
 
     public static void main(String[] args) throws SQLException {
@@ -29,7 +31,7 @@ public class Main {
         Connection conn = DriverManager.getConnection(connection_str,db_user,db_password);
 
         // once we have connection object , now we can create statement object. and it has ability to execute query
-        Statement stmt = conn.createStatement();
+        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
         // optionally you may do as below , if you don't want to just move top tp bottom direction
         //Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 
@@ -50,6 +52,7 @@ public class Main {
                     +" "+rs.getObject("COUNTRY_Name"));
         }
         System.out.println("**********************");
+
         while (rs.previous()){
             System.out.println(rs.getObject("COUNTRY_ID")
                     +" " + rs.getObject("COUNTRY_NAME")
