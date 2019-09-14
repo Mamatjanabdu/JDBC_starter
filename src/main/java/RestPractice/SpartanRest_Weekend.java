@@ -8,6 +8,7 @@
     import org.junit.Test;
 
     import java.util.List;
+    import java.util.Map;
 
     import static io.restassured.RestAssured.get;
     import static io.restassured.RestAssured.given;
@@ -108,17 +109,26 @@
             // jsonPath for content return a json array
             // in order to get single json object we would use  content[indexnumber]
             // in order to get single field in that json obeject : content[indexnumber].fieldName
-                        // for example content[1].phone --> second items phone number
+            // for example content[1].phone --> second items phone number
             // if we want to store entire phone as a List
-                // we can use getList methods with jsonPath by taking out index
-                    // content.phone
+            // we can use getList methods with jsonPath by taking out index
+            // content.phone
 
-            List<Long>  phoneList = response.jsonPath().getList("content.phone");
+            List<Long> phoneList = response.jsonPath().getList("content.phone");
             // get all the name in List of String
-            System.out.println(  phoneList     );
+            System.out.println(phoneList);
 
             List<String> nameList = response.jsonPath().getList("content.name");
-            System.out.println(  nameList   );
+            System.out.println(nameList);
+        }
+      @Test
+        public void test3() {
+                Response response = given().pathParam("my_id", 3).get("/spartans/{my_id}");
+                response.prettyPrint();
+                Map<String, Object> myJsonMap = response.jsonPath().getMap("");
+                System.out.println(myJsonMap.get("spartan_name"));
+
+
 
         }
 
