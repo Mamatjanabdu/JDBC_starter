@@ -1,6 +1,7 @@
 package RestPractice;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,6 +33,12 @@ public class SeriazingAndDeserilizing {
                 .statusCode(200)
 
         ;
+    }
+     public void add_NewSpartnad_test(){
+        given()
+                .contentType(ContentType.JSON)
+                .body("")
 
+        }
 
 }
