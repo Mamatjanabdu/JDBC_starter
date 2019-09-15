@@ -8,12 +8,10 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.object.HasToString.hasToString;
-import static sun.nio.cs.Surrogate.is;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
-public class SeriazingAndDeserilizing {
+public class SendingPostRequests {
 
     @BeforeClass
     public static void setUp() {
@@ -22,8 +20,10 @@ public class SeriazingAndDeserilizing {
         RestAssured.basePath = "/api";
         // above will generate a BASE REQUEST URL OF http://52.23.254.102:8000/api
     }
+
     @Test
     public void Single_Spartan_LoggingAll_Detals_Test() {
+
         given()
                 .pathParam("my_id", 3)
                 .log().all(). // we can put log().all() to see all request information in console
@@ -36,10 +36,13 @@ public class SeriazingAndDeserilizing {
                 .log().ifValidationFails()
                 .statusCode(200)
         ;
+
     }
+
     // Sending a post request
     @Test
     public void Add_NewSpartan_WithStringAsBody_Test(){
+
         given()
                 .log().all()
                 .contentType(ContentType.JSON)
@@ -48,35 +51,70 @@ public class SeriazingAndDeserilizing {
                         "    \"gender\": \"Male\",\n" +
                         "    \"phone\": 42189713412\n" +
                         "}").
-                when()
+        when()
                 .post("/spartans").
-                then()
+        then()
                 .log().all()
                 .statusCode(201)
                 .body("success",is("A Spartan is Born!"))
                 .body("data.name",equalToIgnoringCase("Jon Snow"))
                 .body("data.phone",hasToString("42189713412"))
+
+
         ;
+
     }
+
     @Test
     public void Add_NewSpartan_WithMapAsBody_Test(){
+
         Map<String,Object> bodyMap = new HashMap<>();
         bodyMap.put("name","Ashraf");
         bodyMap.put("gender","Male");
         bodyMap.put("phone","42189713412");
+
         given()
                 .log().all()
                 .contentType(ContentType.JSON)
                 .body(  bodyMap  ).
-                when()
+        when()
                 .post("/spartans").
-                then()
+        then()
                 .log().all()
                 .statusCode(201)
                 .contentType(ContentType.JSON)
                 .body("success",is("A Spartan is Born!"))
                 .body("data.name",equalToIgnoringCase("Ashraf"))
                 .body("data.phone",hasToString("42189713412"))
+
         ;
+
     }
+
+    @Test
+    public void Add_NewSpartan_WithPojoAsBody_Test(){
+
+      Spartan spartan = new Spartan("Myensulu","Female",1231231231);
+
+        given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .body(  spartan  ).
+        when()
+                .post("/spartans").
+        then()
+                .log().all()
+                .statusCode(201)
+                .contentType(ContentType.JSON)
+                .body("success",is("A Spartan is Born!"))
+                .body("data.name",equalToIgnoringCase("Myensulu"))
+                .body("data.phone",hasToString("1231231231"))
+
+        ;
+
+    }
+
+
+
+
 }
