@@ -1,5 +1,6 @@
 package RestPractice;
 
+import com.sun.xml.bind.v2.model.core.MaybeElement;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.AfterClass;
@@ -61,12 +62,14 @@ public class HR_ORDS_REST_API_Test {
     @Test
     public void test_single_Region(){
 
-        Response response = given().pathParam("my_id",1)
-                                .get("/regions/{my_id}");
-
+//        Response response = given().pathParam("my_id",1)
+//                                .get("/regions/{my_id}");
+     Response response= given().pathParam("my_id",1)
+        .get("/regions/{my_id}");
         response.prettyPrint();
 
         Map<String, Object> myJsonMap = response.jsonPath().getMap("");
+
         System.out.println( myJsonMap.get("region_name")  );
         System.out.println( myJsonMap.get("links")  );
 

@@ -39,7 +39,7 @@ public class HamCrestLibrary {
                 .contentType(ContentType.JSON)
                 .body("id",equalTo(3))
                 .body("gender", equalToIgnoringCase("male"))
-                .body("phone",equalTo("6105035231"));
+                .body("phone",hasToString("6105035231"));
 
 
 
