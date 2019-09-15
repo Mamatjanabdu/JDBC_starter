@@ -2,6 +2,7 @@ package RestPractice;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,24 +27,27 @@ public class HamCrestLibrary {
     @Test
     public void DoingAssertionWithHamcrest_ForSpartan(){
 
-
         //Response response= given().pathParam("my_id",3).get("/spartans/{my_id}");
         //response.prettyPrint();
         given()
                 .pathParam("my_id",3).
-        when()
+                when()
                 .get("/spartans/{my_id}").
-        then()
+                then()
                 .assertThat()
                 .statusCode(equalTo(200))
                 .contentType(ContentType.JSON)
                 .body("id",equalTo(3))
                 .body("gender", equalToIgnoringCase("male"))
-                .body("phone",hasToString("6105035231"));
-
-
+                .body("phone", hasToString("6105035231"));
 
     }
+
+
+
+
+
+
 
 
 
@@ -56,8 +60,8 @@ public class HamCrestLibrary {
 
         assertEquals(30, a+b) ;
 
-        assertThat(30, equalTo(a+b));
-        assertThat(20, greaterThan(a+b) );
+        assertThat(a+b, equalTo(30));
+        assertThat(a+b, greaterThan(20) );
 
     }
 
@@ -68,6 +72,8 @@ public class HamCrestLibrary {
 
         int[] nums = {1,4,6,7,8} ;
 
+        //assertThat(nums, hasItemInArray(3));
+       // assertThat(nums, arrayContaining(6));
         //Matchers.contains()
        //assertThat(nums  , hasItemInArray(1));
        // assertThat(1 ,hasItemInArray(1) );
