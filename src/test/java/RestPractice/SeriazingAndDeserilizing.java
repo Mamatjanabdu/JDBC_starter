@@ -5,7 +5,13 @@ import io.restassured.http.ContentType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.object.HasToString.hasToString;
+import static sun.nio.cs.Surrogate.is;
 
 public class SeriazingAndDeserilizing {
 
@@ -16,10 +22,8 @@ public class SeriazingAndDeserilizing {
         RestAssured.basePath = "/api";
         // above will generate a BASE REQUEST URL OF http://52.23.254.102:8000/api
     }
-
     @Test
     public void Single_Spartan_LoggingAll_Detals_Test() {
-
         given()
                 .pathParam("my_id", 3)
                 .log().all(). // we can put log().all() to see all request information in console
@@ -31,14 +35,48 @@ public class SeriazingAndDeserilizing {
                 // in below example we only want to see the response log if any validation fails
                 .log().ifValidationFails()
                 .statusCode(200)
-
         ;
     }
-     public void add_NewSpartnad_test(){
+    // Sending a post request
+    @Test
+    public void Add_NewSpartan_WithStringAsBody_Test(){
         given()
+                .log().all()
                 .contentType(ContentType.JSON)
-                .body("")
-
-        }
-
+                .body("{\n" +
+                        "   \"name\": \"Jon Snow\",\n" +
+                        "    \"gender\": \"Male\",\n" +
+                        "    \"phone\": 42189713412\n" +
+                        "}").
+                when()
+                .post("/spartans").
+                then()
+                .log().all()
+                .statusCode(201)
+                .body("success",is("A Spartan is Born!"))
+                .body("data.name",equalToIgnoringCase("Jon Snow"))
+                .body("data.phone",hasToString("42189713412"))
+        ;
+    }
+    @Test
+    public void Add_NewSpartan_WithMapAsBody_Test(){
+        Map<String,Object> bodyMap = new HashMap<>();
+        bodyMap.put("name","Ashraf");
+        bodyMap.put("gender","Male");
+        bodyMap.put("phone","42189713412");
+        given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .body(  bodyMap  ).
+                when()
+                .post("/spartans").
+                then()
+                .log().all()
+                .statusCode(201)
+                .contentType(ContentType.JSON)
+                .body("success",is("A Spartan is Born!"))
+                .body("data.name",equalToIgnoringCase("Ashraf"))
+                .body("data.phone",hasToString("42189713412"))
+        ;
+    }
 }
