@@ -36,10 +36,16 @@
         </dependency>
 
         <dependency>
-            <groupId>io.rest-assured</groupId>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
+        <dependency>
+         <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>4.1.1</version>
-            <scope>test</scope>
+         <scope>test</scope>
         </dependency>
 
         <dependency>
