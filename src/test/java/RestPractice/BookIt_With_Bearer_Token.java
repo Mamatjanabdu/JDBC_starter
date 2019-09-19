@@ -60,7 +60,7 @@ public class BookIt_With_Bearer_Token {
                 .auth().oauth2(newToken).
                 when()
                 .get("/api/rooms").
-                then()
+                then().log().all()
                 .statusCode(200);
 
 
