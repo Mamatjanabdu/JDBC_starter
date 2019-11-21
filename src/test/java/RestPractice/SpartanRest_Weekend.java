@@ -69,7 +69,7 @@ public class SpartanRest_Weekend {
 
         assertEquals(200, response.statusCode());
         assertFalse(response.asString().contains("Female"));
-        response.prettyPrint();
+      //  response.prettyPrint();
 
 
         System.out.println(response.path("pageable.sort.empty").toString());
@@ -131,6 +131,7 @@ public class SpartanRest_Weekend {
         Response response = given().pathParam("my_id", 3).get("/spartans/{my_id}");
         response.prettyPrint();
         Map<String, Object> myJsonMap = response.jsonPath().getMap("");
+
         System.out.println(myJsonMap.get("name"));
         System.out.println(myJsonMap.get("gender"));
         System.out.println(myJsonMap.get("phone"));
